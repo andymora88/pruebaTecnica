@@ -1,0 +1,93 @@
+﻿@model PruebaTecnicAndyMora.Models.Dato
+@{
+    ViewData["Title"] = "VistaCombo";
+
+}
+
+
+
+<h1>Vista combo</h1>
+
+<h4>Dato</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form>
+           <div class="form-group">
+                <label asp-for="UsuarioId" class="control-label">Seleccione un usuario</label>
+                <select asp-for="UsuarioId" class ="form-control" asp-items="ViewBag.UsuarioId"></select>
+            </div>
+
+            <div class="form-group">
+                <label for="inputUsuarioNombre" class="control-label">Nombre</label>
+                <input id="inputUsuarioNombre" name="inputUsuarioNombre" class="form-control" readonly />
+            </div>
+
+            <div class="form-group">
+                <label for="inputUsuarioApellido" class="control-label">Apellido</label>
+                <input id="inputUsuarioApellido" name="inputUsuarioApellido" class="form-control" readonly />
+            </div>
+
+        
+            <div class="form-group">
+                <label for="inputUsuarioCedula" class="control-label">Cedula</label>
+                <input id="inputUsuarioCedula" name="inputUsuarioCedula" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label for="inputUsuarioTelefono" class="control-label">Telefono</label>
+                <input id="inputUsuarioTelefono" name="inputUsuarioTelefono" class="form-control" readonly />
+            </div>
+
+            <div class="form-group">
+                <label for="inputUsuarioDireccion" class="control-label">Direccion</label>
+                <input id="inputUsuarioDireccion" name="inputUsuarioDireccion" class="form-control" readonly />
+            </div>
+       
+            <div class="form-group">
+                <label for="inputUsuarioEstado" class="control-label">Estado</label>
+                <input id="inputUsuarioEstado" name="inputUsuarioEstado" class="form-control" readonly />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+            var selectedId = $('#UsuarioId').val();
+            cargarDatosPorId(selectedId);
+        });
+
+        $(function () {
+            $('#UsuarioId').change(function () {
+                var selectedId = $(this).val();
+                cargarDatosPorId(selectedId);
+            });
+        });
+
+
+        function cargarDatosPorId(id) {
+            $.ajax({
+                url: '/Datos/DatosporId?id=' + id,
+                type: 'GET',
+                success: function (response) {
+                    var json = JSON.parse(response);
+                    $('#inputUsuarioNombre').val(json.data.Usuario.Nombre);
+                    $('#inputUsuarioApellido').val(json.data.Usuario.Apellido);
+                    $('#inputUsuarioCedula').val(json.data.Usuario.Cedula);
+                    $('#inputUsuarioTelefono').val(json.data.Telefono);
+                    $('#inputUsuarioDireccion').val(json.data.Direccion);
+                    $('#inputUsuarioEstado').val(json.data.Usuario.Estado);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+
+       
+    </script>
+
+}
